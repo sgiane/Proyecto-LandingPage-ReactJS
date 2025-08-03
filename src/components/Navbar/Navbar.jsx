@@ -1,69 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../../assets/Logo.jpg";
 
 const navbarLinks = [
-  {
-    id: 1,
-    title: "Inicio",
-    link: "/",
-  },
-
-  {
-    id: 2,
-    title: "Nosotros",
-    link: "#",
-  },
-
-  {
-    id: 3,
-    title: "Menú",
-    link: "#",
-  },
-
-  {
-    id: 4,
-    title: "Testimonios",
-    link: "#",
-  },
-
-  {
-    id: 5,
-    title: "Ubicación",
-    link: "#",
-  },
-
-  {
-    id: 6,
-    title: "Reserva",
-    link: "#",
-  },
+  {id: 1, title: "Inicio",link: "/"},
+  {id: 2, title: "Nosotros", link: "#"},
+  {id: 3, title: "Menú", link: "#"},
+  {id: 4, title: "Testimonios", link: "#"},
+  {id: 5, title: "Ubicación",link: "#"},
+  {id: 6, title: "Reserva", link: "#"},
 ];
 
 const navbarRedes = [
-  {
-    id: 1,
-    title: "Facebook",
-    link: "https://www.facebook.com",
-    icon: "bi bi-facebook",
-    alt: "Facebook",
-  },
-
-  {
-    id: 2,
-    title: "Instagram",
-    link: "https://www.instagram.com",
-    icon: "bi bi-instagram",
-    alt: "Instragram",
-  },
-
-  {
-    id: 3,
-    title: "TikTok",
-    link: "https://www.tiktok.com",
-    icon: "bi bi-tiktok",
-    alt: "Tiktok",
-  },
+  {id: 1, title: "Facebook", link: "https://www.facebook.com", icon: "bi bi-facebook", alt: "Facebook",},
+  {id: 2, title: "Instagram", link:"https://www.instagram.com", icon: "bi bi-instagram", alt: "Instragram",},
+  {id: 3, title: "TikTok", link: "https://www.tiktok.com", icon: "bi bi-tiktok", alt: "Tiktok"},
 ];
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,8 +24,12 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  
+  const enlaces = navbarLinks.filter((link) => link.id < 6);
+  const reservaLink = navbarLinks.find((link) => link.id === 6);
+
   return (
-    <nav>
+    <nav className="sticky top-0">
       <div className="flex justify-between items-center sm:px-12 sm:py-6 px-4 py-3">
         {/* Logo Navbar */}
         <div>
@@ -110,72 +66,105 @@ const Navbar = () => {
             )}
           </svg>
         </button>
+
+
         {/* Navegacion Navbar Desktop */}
         <div className="hidden md:block">
-          <ul className="flex space-x-4 sm:space-x-6 ">
-            {navbarLinks.map((link) => (
+          <ul className="flex space-x-4 sm:space-x-6 items-center">
+            {enlaces.map((link) => (
               <li key={link.id}>
                 <a
-                  className="text-amber-950 md:text-lg text-sm hover:text-yellow-800 transition-transform hover:scale-110 transform inline-block duration-500 "
+                  className="text-amber-950 md:text-lg text-sm font-medium hover:text-yellow-800 transition-transform hover:scale-110 transform inline-block duration-500"
                   href={link.link}
                 >
                   {link.title}
                 </a>
               </li>
             ))}
-          </ul>
-        </div>
-        {/* Navegacion Redes Desktop */}
-        <div className="hidden md:block">
-          <ul className="flex space-x-4">
-            {navbarRedes.map((link) => (
-              <li key={link.id}>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block transition-transform duration-300 transform hover:scale-125"
-                  href={link.link}
+
+            {reservaLink && (
+              <li key={reservaLink.id}>
+                <button
+                  className=" md:text-lg text-sm font-medium bg-lime-900 text-orange-200 px-4 py-1 rounded hover:bg-yellow-700 hover:text-amber-950 transition"
+                  onClick={() => (window.location.href = reservaLink.link)}
                 >
-                  <i
-                    className={`${link.icon} ${link.alt} sm:text-2xl text-lg text-amber-950 hover:text-yellow-800 transition-all duration-300`}
-                  ></i>
-                </a>
+                  {reservaLink.title}
+                </button>
               </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      
-        {/* Menu Mobile */}
-        <div className={`md:hidden absolute w-full bg-amber-50 ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-          <ul className="flex flex-col px-4 py-2">
-            {navbarLinks.map((link) => (
-              <li className="py-2 text-center" key={link.id}>
-                <a className="text-amber-950 hover:text-amber-800" href={link.link} onClick={() => setIsOpen(false)}>
-                  {link.title}
-                </a>
-              </li>
-            ))}
+            )}
           </ul>
 
-          <ul className="flex space-x-4 px-4 py-2 border-t border-amber-900 justify-center">
-            {navbarRedes.map((link) => (
-              <li key={link.id}>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block"
-                  href={link.link}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <i
-                    className={`${link.icon} ${link.alt} sm:text-2xl text-lg text-amber-950 hover:text-yellow-800 transition-all duration-300`}
-                  ></i>
-                </a>
-              </li>
-            ))}
-          </ul>
+          {/* Navegacion Redes Desktop */}
         </div>
+        <div className="hidden md:block">
+            <ul className="flex space-x-4">
+              {navbarRedes.map((link) => (
+                <li key={link.id}>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block transition-transform duration-300 transform hover:scale-125"
+                    href={link.link}
+                  >
+                    <i
+                      className={`${link.icon} ${link.alt} sm:text-2xl text-lg text-amber-950 hover:text-yellow-800 transition-all duration-300`}
+                    ></i>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+      </div>
+
+      {/* Menu Mobile */}
+      <div
+        className={`md:hidden absolute w-full bg-amber-50 transition-all duration-500 ${
+          isOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+      >
+        <ul className="flex flex-col px-4 py-2">
+          {enlaces.map((link) => (
+            <li className="py-2 text-center" key={link.id}>
+              <a
+                className="text-amber-950 font-medium hover:text-amber-800"
+                href={link.link}
+                onClick={() => setIsOpen(false)}
+              >
+                {link.title}
+              </a>
+            </li>
+          ))}
+
+          {reservaLink && (
+            <li className="py-2 text-center" key={reservaLink.id}>
+              <button
+                className="bg-lime-900 text-orange-50 font-medium px-4 py-1 rounded hover:bg-yellow-700 hover:text-amber-950 transition"
+                onClick={() => (window.location.href = reservaLink.link)}
+              >
+                {reservaLink.title}
+              </button>
+            </li>
+          )}
+        </ul>
+
+        <ul className="flex space-x-4 px-4 py-2 border-t border-amber-900 justify-center">
+          {navbarRedes.map((link) => (
+            <li key={link.id}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block"
+                href={link.link}
+                onClick={() => setIsOpen(false)}
+              >
+                <i
+                  className={`${link.icon} ${link.alt} sm:text-2xl text-lg text-amber-950 hover:text-yellow-800 transition-all duration-300`}
+                ></i>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   );
 };
